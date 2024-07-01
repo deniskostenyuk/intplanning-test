@@ -7,6 +7,7 @@ target/
 .idea/encodings.xml
 .idea/workspace.xml
 .idea/modules.xml
+.idea/vcs.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
