@@ -7,6 +7,7 @@ import static helpers.Properties.getStartUrl;
 import static io.restassured.RestAssured.given;
 
 public class AuthorizationTest {
+
     @Test
     public void successAuth() {
         User user = User.setUser(getStartUrl());
