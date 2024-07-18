@@ -7,11 +7,11 @@ public class Properties {
     }
 
     public static String getUserLogin() {
-        return System.getProperty("userLogin");
+        return System.getProperty("user.login");
     }
 
     public static String getUserPassword() {
-        return System.getProperty("userPassword");
+        return System.getProperty("user.password");
     }
 
 }

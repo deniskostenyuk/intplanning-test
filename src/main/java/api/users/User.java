@@ -1,6 +1,8 @@
 package api.users;
 
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,10 +15,12 @@ public class User {
     public String userPwd;
     public String context;
 
-    private static final String URL_LUK_IFIELD = "https://web-luk-ifield-nightly.okd.asuproject.ru/";
-    private static final String URL_LUK_UFAM = "https://web-luk-ufam-dev.okd.asuproject.ru/";
-    private static final String URL_GPN = "https://web-gpn-ufam-nightly.okd.asuproject.ru/";
-    private static final String URL_BEL = "https://web-bel-ufam-nightly.okd.asuproject.ru/";
+    private static final Dotenv dotenv = Dotenv.load();
+
+    private static final String URL_LUK_IFIELD = dotenv.get("URL_LUK_IFIELD");
+    private static final String URL_LUK_UFAM = dotenv.get("URL_LUK_UFAM");
+    private static final String URL_GPN = dotenv.get("URL_GPN");
+    private static final String URL_BEL = dotenv.get("URL_BEL");
 
     private static final Map<String, String> CONTEXT_MAP = new HashMap<>();
 
