@@ -1,9 +1,11 @@
+package api;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import users.AuthorizedUser;
-import users.User;
+import api.users.AuthorizedUser;
+import api.users.User;
 
-import static helpers.Properties.getStartUrl;
+import static api.helpers.Properties.getStartUrl;
 import static io.restassured.RestAssured.given;
 
 public class AuthorizationTest {

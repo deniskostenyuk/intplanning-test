@@ -1,4 +1,4 @@
-package helpers;
+package api.helpers;
 
 public class Properties {
 

@@ -1,11 +1,11 @@
-package users;
+package api.users;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static helpers.Properties.getUserLogin;
-import static helpers.Properties.getUserPassword;
+import static api.helpers.Properties.getUserLogin;
+import static api.helpers.Properties.getUserPassword;
 
 public class User {
     public String locale;
