@@ -13,13 +13,13 @@ public class AuthorizedUser {
     @JsonProperty("IsUserLocked")
     public boolean isUserLocked;
     @JsonProperty("ErrorMessage")
-    public Object errorMessage;
+    public String errorMessage;
 
     public AuthorizedUser() {
 
     }
 
-    public AuthorizedUser(String userId, String accessToken, boolean isSuccess, boolean isUserLocked, Object errorMessage) {
+    public AuthorizedUser(String userId, String accessToken, boolean isSuccess, boolean isUserLocked, String errorMessage) {
         this.userId = userId;
         this.accessToken = accessToken;
         this.isSuccess = isSuccess;

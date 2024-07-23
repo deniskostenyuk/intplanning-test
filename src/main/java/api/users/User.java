@@ -37,10 +37,10 @@ public class User {
         this.context = context;
     }
 
-    public static User setUser(String baseUrl) {
+    public static User setUser(String baseUrl, String login, String password) {
         String context = CONTEXT_MAP.get(baseUrl);
         if (context != null) {
-            return new User("ru", getUserLogin(), getUserPassword(), context);
+            return new User("ru", login, password, context);
         } else throw new IllegalArgumentException("Invalid URL: " + baseUrl);
     }
 }
