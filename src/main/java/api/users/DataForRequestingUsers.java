@@ -40,5 +40,8 @@ public class DataForRequestingUsers {
         this.start = start;
     }
 
-
+    public static DataForRequestingUsers getDataForRequestingUsers() {
+        return new DataForRequestingUsers(null, null, "user", null,null,
+                null, null, "userView", 50, 1, 0);
+    }
 }
