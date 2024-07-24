@@ -20,8 +20,8 @@ public class AuthorizationTest {
                 .post(getStartUrl() + "core/auth/login")
                 .then().log().all()
                 .extract().as(AuthorizedUser.class);
-        Assertions.assertTrue(authorizedUser.isSuccess);
-        Assertions.assertNotNull(authorizedUser.accessToken);
+        Assertions.assertTrue(authorizedUser.isSuccess());
+        Assertions.assertNotNull(authorizedUser.getAccessToken());
     }
 
     @Test
@@ -34,9 +34,9 @@ public class AuthorizationTest {
                 .post(getStartUrl() + "core/auth/login")
                 .then().log().all()
                 .extract().as(AuthorizedUser.class);
-        Assertions.assertFalse(authorizedUser.isSuccess);
-        Assertions.assertNull(authorizedUser.accessToken);
-        Assertions.assertEquals("Введено неправильное имя пользователя и/или пароль.", authorizedUser.errorMessage);
+        Assertions.assertFalse(authorizedUser.isSuccess());
+        Assertions.assertNull(authorizedUser.getAccessToken());
+        Assertions.assertEquals("Введено неправильное имя пользователя и/или пароль.", authorizedUser.getErrorMessage());
     }
 
     @Test
@@ -49,8 +49,38 @@ public class AuthorizationTest {
                 .post(getStartUrl() + "core/auth/login")
                 .then().log().all()
                 .extract().as(AuthorizedUser.class);
-        Assertions.assertFalse(authorizedUser.isSuccess);
-        Assertions.assertNull(authorizedUser.accessToken);
-        Assertions.assertEquals("Не указано имя пользователя или пароль", authorizedUser.errorMessage);
+        Assertions.assertFalse(authorizedUser.isSuccess());
+        Assertions.assertNull(authorizedUser.getAccessToken());
+        Assertions.assertEquals("Не указано имя пользователя или пароль", authorizedUser.getErrorMessage());
+    }
+
+    @Test
+    public void unsuccessfulAuthWithBlockedUser() {
+        User user = User.setUser(getStartUrl(), "testBlock", "testBlock2@1");
+        AuthorizedUser authorizedUser = given()
+                .headers("X-Requested-With", "XMLHttpRequest", "Content-Type", "application/json")
+                .body(user)
+                .when()
+                .post(getStartUrl() + "core/auth/login")
+                .then().log().all()
+                .extract().as(AuthorizedUser.class);
+        Assertions.assertFalse(authorizedUser.isSuccess());
+        Assertions.assertNull(authorizedUser.getAccessToken());
+        Assertions.assertEquals("Пользователь testBlock заблокирован. Для разблокировки обратитесь к администратору ресурса.", authorizedUser.getErrorMessage());
+    }
+
+    @Test
+    public void unsuccessfulAuthWithDeletedUser() {
+        User user = User.setUser(getStartUrl(), "testDelete", "testDelete2@1");
+        AuthorizedUser authorizedUser = given()
+                .headers("X-Requested-With", "XMLHttpRequest", "Content-Type", "application/json")
+                .body(user)
+                .when()
+                .post(getStartUrl() + "core/auth/login")
+                .then().log().all()
+                .extract().as(AuthorizedUser.class);
+        Assertions.assertFalse(authorizedUser.isSuccess());
+        Assertions.assertNull(authorizedUser.getAccessToken());
+        Assertions.assertEquals("Пользователь testDelete удалён. Для восстановления обратитесь к администратору ресурса.", authorizedUser.getErrorMessage());
     }
 }

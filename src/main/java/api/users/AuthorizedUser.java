@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AuthorizedUser {
     @JsonProperty("UserId")
-    public String userId;
+    private String userId;
     @JsonProperty("AccessToken")
-    public String accessToken;
+    private String accessToken;
     @JsonProperty("IsSuccess")
-    public boolean isSuccess;
+    private boolean isSuccess;
     @JsonProperty("IsUserLocked")
-    public boolean isUserLocked;
+    private boolean isUserLocked;
     @JsonProperty("ErrorMessage")
-    public String errorMessage;
+    private String errorMessage;
 
     public AuthorizedUser() {
 
