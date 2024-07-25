@@ -23,10 +23,10 @@ public class UsersList {
     private Object position;
 
     @JsonProperty("ID")
-    private Integer id;
+    private String id;
 
     @JsonProperty("DEPARTMENT.NAME")
-    private Object departamentName;
+    private Object departmentName;
 
     @JsonProperty("ENTERPRISE.NAME")
     private Object enterpriseNAME;
@@ -34,8 +34,11 @@ public class UsersList {
     @JsonProperty("SBS_USER_EXTEND.AUTH_TYPE")
     private String sbsUserExtendAuthType;
 
+    public UsersList() {
+    }
+
     public UsersList(String fio, String login, String email, double disabled, String description, Object position,
-                     Integer id, Object departamentName, Object enterpriseNAME, String sbsUserExtendAuthType) {
+                     String id, Object departmentName, Object enterpriseNAME, String sbsUserExtendAuthType) {
         this.fio = fio;
         this.login = login;
         this.email = email;
@@ -43,7 +46,7 @@ public class UsersList {
         this.description = description;
         this.position = position;
         this.id = id;
-        this.departamentName = departamentName;
+        this.departmentName = departmentName;
         this.enterpriseNAME = enterpriseNAME;
         this.sbsUserExtendAuthType = sbsUserExtendAuthType;
     }
@@ -72,12 +75,12 @@ public class UsersList {
         return position;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public Object getDepartamentName() {
-        return departamentName;
+    public Object getDepartmentName() {
+        return departmentName;
     }
 
     public Object getEnterpriseNAME() {

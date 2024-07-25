@@ -42,6 +42,6 @@ public class DataForRequestingUsers {
 
     public static DataForRequestingUsers getDataForRequestingUsers() {
         return new DataForRequestingUsers(null, null, "user", null,null,
-                null, null, "userView", 50, 1, 0);
+                null, null, "userView", 1000, 1, 0);
     }
 }
