@@ -3,7 +3,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .env
-allure-results/
+target/allure-results/
+.allure
 
 ### IntelliJ IDEA ###
 .idea/

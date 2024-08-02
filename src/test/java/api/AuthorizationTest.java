@@ -1,5 +1,8 @@
 package api;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Owner;
+import io.qameta.allure.restassured.AllureRestAssured;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import api.users.AuthorizedUser;
@@ -25,9 +28,12 @@ public class AuthorizationTest {
     }
 
     @Test
+    @Owner("Денис Костенюк")
+    @Description("Проверка неуспешной авторизации с неправильными учетными данными")
     public void unsuccessfulAuthWithInvalidCredentials() {
         User user = User.setUser(getStartUrl(), getUserLogin(), "testPassword");
         AuthorizedUser authorizedUser = given()
+                .filter(new AllureRestAssured())
                 .headers("X-Requested-With", "XMLHttpRequest", "Content-Type", "application/json")
                 .body(user)
                 .when()
