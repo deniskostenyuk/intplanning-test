@@ -1,32 +1,26 @@
 package api;
 
 import api.users.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import io.qameta.allure.Owner;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.*;
 
 import java.util.*;
 
+import static api.Specs.requestSpecForUsers;
 import static api.helpers.Properties.*;
 import static api.helpers.Properties.getStartUrl;
 import static api.users.DataForRequestingUserList.getDataForRequestingUserList;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 
+@DisplayName("Пользователи")
 public class UserTest {
 
     private static UsersList createdUser;
-//    private AuthorizedUser authorizedUser;
-//
-//    @BeforeAll
-//    public void setup() {
-//        authorizedUser = ;  // Логика авторизации
-//    }
 
-    @Test
-    @Order(1)
-    public void createUser() {
-        // авторизуемся и получаем токен
+    @BeforeAll
+    public static void login() {
         User user = User.setUser(getStartUrl(), getUserLogin(), getUserPassword());
         AuthorizedUser authorizedUser = given()
                 .headers("X-Requested-With", "XMLHttpRequest", "Content-Type", "application/json")
@@ -37,6 +31,15 @@ public class UserTest {
                 .extract().as(AuthorizedUser.class);
         Assertions.assertTrue(authorizedUser.isSuccess());
         Assertions.assertNotNull(authorizedUser.getAccessToken());
+
+        RestAssured.requestSpecification = requestSpecForUsers(getStartUrl(), authorizedUser);
+    }
+
+    @Test
+    @Order(1)
+    @Owner("Денис Костенюк")
+    @DisplayName("Создание пользователя")
+    public void createUser() {
 
         // формируем body для создания юзера
         String code = String.valueOf(new Date().getTime());
@@ -53,23 +56,17 @@ public class UserTest {
 
         // запрос на создание юзера
         given()
-                .headers("X-Requested-With", "XMLHttpRequest",
-                        "Content-Type", "application/json",
-                        "Authorization", "Bearer " + authorizedUser.getAccessToken())
                 .body(bodyData)
                 .when()
-                .post(getStartUrl() + "api/Admin/SetFormUser")
+                .post("api/Admin/SetFormUser")
                 .then().log().all()
                 .body("Saved", equalTo(true));
 
         // проверка наличия созданного юзера в общем списке юзеров
         List<UsersList> usersList = given()
-                .headers("X-Requested-With", "XMLHttpRequest",
-                        "Content-Type", "application/json",
-                        "Authorization", "Bearer " + authorizedUser.getAccessToken())
                 .body(getDataForRequestingUserList())
                 .when()
-                .post(getStartUrl() + "api/Registry/DoSearchViewQuery")
+                .post("api/Registry/DoSearchViewQuery")
                 .then().log().all()
                 .extract().body().jsonPath().getList("data", UsersList.class);
         boolean userExists = false;
@@ -86,18 +83,9 @@ public class UserTest {
 
     @Test
     @Order(2)
+    @Owner("Денис Костенюк")
+    @DisplayName("Удаление пользователя")
     public void deleteUser() {
-        // авторизуемся и получаем токен
-        User user = User.setUser(getStartUrl(), getUserLogin(), getUserPassword());
-        AuthorizedUser authorizedUser = given()
-                .headers("X-Requested-With", "XMLHttpRequest", "Content-Type", "application/json")
-                .body(user)
-                .when()
-                .post(getStartUrl() + "core/auth/login")
-                .then()
-                .extract().as(AuthorizedUser.class);
-        Assertions.assertTrue(authorizedUser.isSuccess());
-        Assertions.assertNotNull(authorizedUser.getAccessToken());
 
         // формируем body для удаления юзера
         Map<String, Object> bodyData = new HashMap<>();
@@ -106,23 +94,17 @@ public class UserTest {
 
         // запрос на удаление пользователя
         given()
-                .headers("X-Requested-With", "XMLHttpRequest",
-                        "Content-Type", "application/json",
-                        "Authorization", "Bearer " + authorizedUser.getAccessToken())
                 .body(bodyData)
                 .when()
-                .post(getStartUrl() + "api/Registry/DelRec")
+                .post("api/Registry/DelRec")
                 .then().log().all()
                 .body("Saved", equalTo(true));
 
         // проверка отсутствия юзера в общем списке юзеров
         List<UsersList> usersList = given()
-                .headers("X-Requested-With", "XMLHttpRequest",
-                        "Content-Type", "application/json",
-                        "Authorization", "Bearer " + authorizedUser.getAccessToken())
                 .body(getDataForRequestingUserList())
                 .when()
-                .post(getStartUrl() + "api/Registry/DoSearchViewQuery")
+                .post("api/Registry/DoSearchViewQuery")
                 .then().log().all()
                 .extract().body().jsonPath().getList("data", UsersList.class);
         boolean userExists = false;

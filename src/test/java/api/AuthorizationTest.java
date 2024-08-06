@@ -1,26 +1,37 @@
 package api;
 
-import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Owner;
-import io.qameta.allure.restassured.AllureRestAssured;
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import api.users.AuthorizedUser;
 import api.users.User;
 
+import static api.Specs.requestSpec;
 import static api.helpers.Properties.*;
 import static io.restassured.RestAssured.given;
 
+@DisplayName("Авторизация")
 public class AuthorizationTest {
 
+    @BeforeAll
+    public static void setSpec() {
+        RestAssured.requestSpecification = requestSpec(getStartUrl());
+    }
+
     @Test
+    @Epic("Авторизация")
+    @Owner("Денис Костенюк")
+    @DisplayName("Проверка успешной авторизации")
     public void successAuth() {
         User user = User.setUser(getStartUrl(), getUserLogin(), getUserPassword());
         AuthorizedUser authorizedUser = given()
-                .headers("X-Requested-With", "XMLHttpRequest", "Content-Type", "application/json")
                 .body(user)
                 .when()
-                .post(getStartUrl() + "core/auth/login")
+                .post("core/auth/login")
                 .then().log().all()
                 .extract().as(AuthorizedUser.class);
         Assertions.assertTrue(authorizedUser.isSuccess());
@@ -28,16 +39,15 @@ public class AuthorizationTest {
     }
 
     @Test
+    @Epic("Авторизация")
     @Owner("Денис Костенюк")
-    @Description("Проверка неуспешной авторизации с неправильными учетными данными")
+    @DisplayName("Проверка неуспешной авторизации с неправильными учетными данными")
     public void unsuccessfulAuthWithInvalidCredentials() {
         User user = User.setUser(getStartUrl(), getUserLogin(), "testPassword");
         AuthorizedUser authorizedUser = given()
-                .filter(new AllureRestAssured())
-                .headers("X-Requested-With", "XMLHttpRequest", "Content-Type", "application/json")
                 .body(user)
                 .when()
-                .post(getStartUrl() + "core/auth/login")
+                .post("core/auth/login")
                 .then().log().all()
                 .extract().as(AuthorizedUser.class);
         Assertions.assertFalse(authorizedUser.isSuccess());
@@ -46,13 +56,15 @@ public class AuthorizationTest {
     }
 
     @Test
+    @Epic("Авторизация")
+    @Owner("Денис Костенюк")
+    @DisplayName("Проверка неуспешной авторизации с пустыми учетными данными")
     public void unsuccessfulAuthWithEmptyCredentials() {
         User user = User.setUser(getStartUrl(), "", "");
         AuthorizedUser authorizedUser = given()
-                .headers("X-Requested-With", "XMLHttpRequest", "Content-Type", "application/json")
                 .body(user)
                 .when()
-                .post(getStartUrl() + "core/auth/login")
+                .post("core/auth/login")
                 .then().log().all()
                 .extract().as(AuthorizedUser.class);
         Assertions.assertFalse(authorizedUser.isSuccess());
@@ -61,13 +73,15 @@ public class AuthorizationTest {
     }
 
     @Test
+    @Epic("Авторизация")
+    @Owner("Денис Костенюк")
+    @DisplayName("Проверка неуспешной авторизации у заблокированного пользователя")
     public void unsuccessfulAuthWithBlockedUser() {
         User user = User.setUser(getStartUrl(), "testBlock", "testBlock2@1");
         AuthorizedUser authorizedUser = given()
-                .headers("X-Requested-With", "XMLHttpRequest", "Content-Type", "application/json")
                 .body(user)
                 .when()
-                .post(getStartUrl() + "core/auth/login")
+                .post("core/auth/login")
                 .then().log().all()
                 .extract().as(AuthorizedUser.class);
         Assertions.assertFalse(authorizedUser.isSuccess());
@@ -76,13 +90,15 @@ public class AuthorizationTest {
     }
 
     @Test
+    @Epic("Авторизация")
+    @Owner("Денис Костенюк")
+    @DisplayName("Проверка неуспешной авторизации у удаленного пользователя")
     public void unsuccessfulAuthWithDeletedUser() {
         User user = User.setUser(getStartUrl(), "testDelete", "testDelete2@1");
         AuthorizedUser authorizedUser = given()
-                .headers("X-Requested-With", "XMLHttpRequest", "Content-Type", "application/json")
                 .body(user)
                 .when()
-                .post(getStartUrl() + "core/auth/login")
+                .post("core/auth/login")
                 .then().log().all()
                 .extract().as(AuthorizedUser.class);
         Assertions.assertFalse(authorizedUser.isSuccess());
