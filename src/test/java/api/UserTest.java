@@ -84,12 +84,58 @@ public class UserTest {
     @Test
     @Order(2)
     @Owner("Денис Костенюк")
+    @DisplayName("Редактирование пользователя")
+    public void editUserFio() {
+
+        // формируем body для редактирования юзера
+        String code = String.valueOf(new Date().getTime());
+        String userFio = createdUser.getFio() + code;
+        String userEmail = "testmail@mail.com";
+        DataForCreatingUser bodyData = new DataForCreatingUser();
+        bodyData.setId(createdUser.getId());
+        bodyData.setObject("user");
+        List<Val> vals = new ArrayList<>();
+        vals.add(new Val("FIO", userFio));
+        vals.add(new Val("EMAIL", userEmail));
+        vals.add(new Val("DEPARTMENT", null));
+        bodyData.setVals(vals);
+
+        // запрос на создание юзера
+        given()
+                .body(bodyData)
+                .when()
+                .post("api/Admin/SetFormUser")
+                .then().log().all()
+                .body("Saved", equalTo(true));
+
+        // проверка наличия созданного юзера в общем списке юзеров
+        List<UsersList> usersList = given()
+                .body(getDataForRequestingUserList())
+                .when()
+                .post("api/Registry/DoSearchViewQuery")
+                .then().log().all()
+                .extract().body().jsonPath().getList("data", UsersList.class);
+        boolean userExists = false;
+        for (UsersList userData : usersList) {
+            System.out.println(userData.getLogin());
+            if (userData.getFio().equals(userFio) && userData.getEmail().equals(userEmail)) {
+                createdUser = userData;
+                userExists = true;
+                break;
+            }
+        }
+        Assertions.assertTrue(userExists, "Created user \"" + userFio + "\" is not found in the user list");
+    }
+
+    @Test
+    @Order(3)
+    @Owner("Денис Костенюк")
     @DisplayName("Удаление пользователя")
     public void deleteUser() {
 
         // формируем body для удаления юзера
         Map<String, Object> bodyData = new HashMap<>();
-        bodyData.put("Id", createdUser.getId());  // Убедитесь, что используете правильный тип данных
+        bodyData.put("Id", createdUser.getId());
         bodyData.put("Object", "user");
 
         // запрос на удаление пользователя
@@ -109,7 +155,7 @@ public class UserTest {
                 .extract().body().jsonPath().getList("data", UsersList.class);
         boolean userExists = false;
         for (UsersList userData : usersList) {
-            if (userData.getLogin().equals(createdUser.getLogin()) && userData.getFio().equals(createdUser.getFio())) {
+            if (userData.getLogin().equals(createdUser.getLogin()) || userData.getFio().equals(createdUser.getFio())) {
                 userExists = true;
                 break;
             }
