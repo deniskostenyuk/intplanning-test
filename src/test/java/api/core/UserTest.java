@@ -1,10 +1,9 @@
-package api;
+package api.core;
 
 import api.users.*;
 import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.*;
-
 import java.util.*;
 
 import static api.Specs.requestSpecForUsers;
@@ -71,13 +70,13 @@ public class UserTest {
                 .extract().body().jsonPath().getList("data", UsersList.class);
         boolean userExists = false;
         for (UsersList userData : usersList) {
-            System.out.println(userData.getLogin());
             if (userData.getLogin().equals(userName) && userData.getFio().equals(userName)) {
                 createdUser = userData;
                 userExists = true;
                 break;
             }
         }
+        System.out.println("***************************************ID USER " + createdUser.getId().toPlainString());
         Assertions.assertTrue(userExists, "Created user \"" + userName + "\" is not found in the user list");
     }
 
@@ -85,14 +84,14 @@ public class UserTest {
     @Order(2)
     @Owner("Денис Костенюк")
     @DisplayName("Редактирование пользователя")
-    public void editUserFio() {
+    public void editUserFioAndEmail() {
 
         // формируем body для редактирования юзера
         String code = String.valueOf(new Date().getTime());
         String userFio = createdUser.getFio() + code;
         String userEmail = "testmail@mail.com";
         DataForCreatingUser bodyData = new DataForCreatingUser();
-        bodyData.setId(createdUser.getId());
+        bodyData.setId(createdUser.getId().toString());
         bodyData.setObject("user");
         List<Val> vals = new ArrayList<>();
         vals.add(new Val("FIO", userFio));
@@ -100,7 +99,7 @@ public class UserTest {
         vals.add(new Val("DEPARTMENT", null));
         bodyData.setVals(vals);
 
-        // запрос на создание юзера
+        // запрос на редактирование юзера
         given()
                 .body(bodyData)
                 .when()
@@ -108,7 +107,7 @@ public class UserTest {
                 .then().log().all()
                 .body("Saved", equalTo(true));
 
-        // проверка наличия созданного юзера в общем списке юзеров
+        // проверка наличия отредактированного юзера в общем списке юзеров
         List<UsersList> usersList = given()
                 .body(getDataForRequestingUserList())
                 .when()

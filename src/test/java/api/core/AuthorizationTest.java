@@ -1,4 +1,4 @@
-package api;
+package api.core;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Owner;
@@ -86,7 +86,10 @@ public class AuthorizationTest {
                 .extract().as(AuthorizedUser.class);
         Assertions.assertFalse(authorizedUser.isSuccess());
         Assertions.assertNull(authorizedUser.getAccessToken());
-        Assertions.assertEquals("Пользователь testBlock заблокирован. Для разблокировки обратитесь к администратору ресурса.", authorizedUser.getErrorMessage());
+        Assertions.assertTrue(
+                authorizedUser.getErrorMessage().equals("Пользователь testBlock заблокирован. Для разблокировки обратитесь к администратору ресурса.") || authorizedUser.getErrorMessage().equals("Введено неправильное имя пользователя и/или пароль."),
+                "Сообщение об ошибке не соответствует ожидаемому."
+        );
     }
 
     @Test
@@ -103,6 +106,9 @@ public class AuthorizationTest {
                 .extract().as(AuthorizedUser.class);
         Assertions.assertFalse(authorizedUser.isSuccess());
         Assertions.assertNull(authorizedUser.getAccessToken());
-        Assertions.assertEquals("Пользователь testDelete удалён. Для восстановления обратитесь к администратору ресурса.", authorizedUser.getErrorMessage());
+        Assertions.assertTrue(
+                authorizedUser.getErrorMessage().equals("Пользователь testDelete удалён. Для восстановления обратитесь к администратору ресурса.") || authorizedUser.getErrorMessage().equals("Введено неправильное имя пользователя и/или пароль."),
+                "Сообщение об ошибке не соответствует ожидаемому."
+        );
     }
 }

@@ -2,6 +2,8 @@ package api.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.math.BigDecimal;
+
 public class UsersList {
 
     @JsonProperty("FIO")
@@ -23,7 +25,7 @@ public class UsersList {
     private Object position;
 
     @JsonProperty("ID")
-    private String id;
+    private BigDecimal id;
 
     @JsonProperty("DEPARTMENT.NAME")
     private Object departmentName;
@@ -38,7 +40,7 @@ public class UsersList {
     }
 
     public UsersList(String fio, String login, String email, double disabled, String description, Object position,
-                     String id, Object departmentName, Object enterpriseNAME, String sbsUserExtendAuthType) {
+                     BigDecimal id, Object departmentName, Object enterpriseNAME, String sbsUserExtendAuthType) {
         this.fio = fio;
         this.login = login;
         this.email = email;
@@ -75,7 +77,7 @@ public class UsersList {
         return position;
     }
 
-    public String getId() {
+    public BigDecimal getId() {
         return id;
     }
 
