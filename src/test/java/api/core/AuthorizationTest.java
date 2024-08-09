@@ -3,6 +3,8 @@ package api.core;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
+import io.restassured.config.JsonConfig;
+import io.restassured.path.json.config.JsonPathConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +18,11 @@ import static io.restassured.RestAssured.given;
 
 @DisplayName("Авторизация")
 public class AuthorizationTest {
+
+    static {
+        JsonConfig jsonConfig = JsonConfig.jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.DOUBLE);
+        RestAssured.config = RestAssured.config().jsonConfig(jsonConfig);
+    }
 
     @BeforeAll
     public static void setSpec() {

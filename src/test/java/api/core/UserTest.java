@@ -3,7 +3,12 @@ package api.core;
 import api.users.*;
 import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
+import io.restassured.config.JsonConfig;
+import io.restassured.path.json.config.JsonPathConfig;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
+
+import java.math.BigDecimal;
 import java.util.*;
 
 import static api.Specs.requestSpecForUsers;
@@ -15,6 +20,11 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 @DisplayName("Пользователи")
 public class UserTest {
+
+    static {
+        JsonConfig jsonConfig = JsonConfig.jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.DOUBLE);
+        RestAssured.config = RestAssured.config().jsonConfig(jsonConfig);
+    }
 
     private static UsersList createdUser;
 
@@ -76,7 +86,6 @@ public class UserTest {
                 break;
             }
         }
-        System.out.println("***************************************ID USER " + createdUser.getId().toPlainString());
         Assertions.assertTrue(userExists, "Created user \"" + userName + "\" is not found in the user list");
     }
 
@@ -91,7 +100,7 @@ public class UserTest {
         String userFio = createdUser.getFio() + code;
         String userEmail = "testmail@mail.com";
         DataForCreatingUser bodyData = new DataForCreatingUser();
-        bodyData.setId(createdUser.getId().toString());
+        bodyData.setId(createdUser.getId());
         bodyData.setObject("user");
         List<Val> vals = new ArrayList<>();
         vals.add(new Val("FIO", userFio));

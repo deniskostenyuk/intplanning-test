@@ -25,7 +25,7 @@ public class UsersList {
     private Object position;
 
     @JsonProperty("ID")
-    private BigDecimal id;
+    private double id;
 
     @JsonProperty("DEPARTMENT.NAME")
     private Object departmentName;
@@ -40,7 +40,7 @@ public class UsersList {
     }
 
     public UsersList(String fio, String login, String email, double disabled, String description, Object position,
-                     BigDecimal id, Object departmentName, Object enterpriseNAME, String sbsUserExtendAuthType) {
+                     double id, Object departmentName, Object enterpriseNAME, String sbsUserExtendAuthType) {
         this.fio = fio;
         this.login = login;
         this.email = email;
@@ -77,8 +77,8 @@ public class UsersList {
         return position;
     }
 
-    public BigDecimal getId() {
-        return id;
+    public String getId() {
+        return BigDecimal.valueOf(id).toPlainString();
     }
 
     public Object getDepartmentName() {
