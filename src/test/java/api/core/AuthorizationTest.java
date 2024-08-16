@@ -30,7 +30,6 @@ public class AuthorizationTest {
     }
 
     @Test
-    @Epic("Авторизация")
     @Owner("Денис Костенюк")
     @DisplayName("Проверка успешной авторизации")
     public void successAuth() {
@@ -46,7 +45,6 @@ public class AuthorizationTest {
     }
 
     @Test
-    @Epic("Авторизация")
     @Owner("Денис Костенюк")
     @DisplayName("Проверка неуспешной авторизации с неправильными учетными данными")
     public void unsuccessfulAuthWithInvalidCredentials() {
@@ -63,7 +61,6 @@ public class AuthorizationTest {
     }
 
     @Test
-    @Epic("Авторизация")
     @Owner("Денис Костенюк")
     @DisplayName("Проверка неуспешной авторизации с пустыми учетными данными")
     public void unsuccessfulAuthWithEmptyCredentials() {
@@ -80,7 +77,6 @@ public class AuthorizationTest {
     }
 
     @Test
-    @Epic("Авторизация")
     @Owner("Денис Костенюк")
     @DisplayName("Проверка неуспешной авторизации у заблокированного пользователя")
     public void unsuccessfulAuthWithBlockedUser() {
@@ -100,7 +96,6 @@ public class AuthorizationTest {
     }
 
     @Test
-    @Epic("Авторизация")
     @Owner("Денис Костенюк")
     @DisplayName("Проверка неуспешной авторизации у удаленного пользователя")
     public void unsuccessfulAuthWithDeletedUser() {

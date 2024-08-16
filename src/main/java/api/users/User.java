@@ -17,10 +17,10 @@ public class User {
 
     private static final Dotenv dotenv = Dotenv.load();
 
-    private static final String URL_LUK_IFIELD = dotenv.get("URL_LUK_IFIELD");
-    private static final String URL_LUK_UFAM = dotenv.get("URL_LUK_UFAM");
-    private static final String URL_GPN = dotenv.get("URL_GPN");
-    private static final String URL_BEL = dotenv.get("URL_BEL");
+    public static final String URL_LUK_IFIELD = dotenv.get("URL_LUK_IFIELD");
+    public static final String URL_LUK_UFAM = dotenv.get("URL_LUK_UFAM");
+    public static final String URL_GPN = dotenv.get("URL_GPN");
+    public static final String URL_BEL = dotenv.get("URL_BEL");
 
     private static final Map<String, String> CONTEXT_MAP = new HashMap<>();
 

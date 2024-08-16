@@ -5,20 +5,20 @@ import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.config.JsonConfig;
 import io.restassured.path.json.config.JsonPathConfig;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 import static api.Specs.requestSpecForUsers;
 import static api.helpers.Properties.*;
 import static api.helpers.Properties.getStartUrl;
 import static api.users.DataForRequestingUserList.getDataForRequestingUserList;
+import static api.users.User.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 @DisplayName("Пользователи")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserTest {
 
     static {
@@ -57,10 +57,11 @@ public class UserTest {
         bodyData.setId("");
         bodyData.setObject("user");
         List<Val> vals = new ArrayList<>();
-        vals.add(new Val("FIO", userName));
         vals.add(new Val("LOGIN", userName));
         vals.add(new Val("PASSWORD", "testUser@" + code));
-        vals.add(new Val("DEPARTMENT", null));
+        if (getStartUrl().equals(URL_LUK_IFIELD) || getStartUrl().equals(URL_LUK_UFAM)) {
+            vals.add(new Val("FIO", userName));
+        }
         bodyData.setVals(vals);
 
         // запрос на создание юзера
@@ -97,15 +98,21 @@ public class UserTest {
 
         // формируем body для редактирования юзера
         String code = String.valueOf(new Date().getTime());
+        String userLogin = createdUser.getLogin() + code;
         String userFio = createdUser.getFio() + code;
         String userEmail = "testmail@mail.com";
         DataForCreatingUser bodyData = new DataForCreatingUser();
         bodyData.setId(createdUser.getId());
         bodyData.setObject("user");
         List<Val> vals = new ArrayList<>();
-        vals.add(new Val("FIO", userFio));
-        vals.add(new Val("EMAIL", userEmail));
-        vals.add(new Val("DEPARTMENT", null));
+        vals.add(new Val("LOGIN", userLogin));
+
+        if (!getStartUrl().equals(URL_GPN)) {
+            vals.add(new Val("FIO", userFio));
+            vals.add(new Val("EMAIL", userEmail));
+            vals.add(new Val("DEPARTMENT", null));
+        }
+
         bodyData.setVals(vals);
 
         // запрос на редактирование юзера
@@ -126,9 +133,17 @@ public class UserTest {
         boolean userExists = false;
         for (UsersList userData : usersList) {
             System.out.println(userData.getLogin());
-            if (userData.getFio().equals(userFio) && userData.getEmail().equals(userEmail)) {
+            if (userData.getLogin().equals(userLogin)) {
                 createdUser = userData;
                 userExists = true;
+                if (!getStartUrl().equals(URL_GPN)) {
+                    userExists = false;
+                    if (userData.getFio().equals(userFio) && userData.getEmail().equals(userEmail)) {
+                        createdUser = userData;
+                        userExists = true;
+                        break;
+                    }
+                }
                 break;
             }
         }
