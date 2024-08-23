@@ -17,7 +17,7 @@ public class Specs {
                 .headers("X-Requested-With", "XMLHttpRequest", "Content-Type", "application/json");
     }
 
-    public static RequestSpecification requestSpecForUsers(String baseUri, AuthorizedUser authorizedUser) {
+    public static RequestSpecification requestSpecWithAuth(String baseUri, AuthorizedUser authorizedUser) {
         return new RequestSpecBuilder()
                 .setBaseUri(baseUri)
                 .log(LogDetail.ALL)

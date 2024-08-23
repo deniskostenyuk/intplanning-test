@@ -1,8 +1,8 @@
-package api.users;
+package api.helpers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class DataForRequestingUserList {
+public class RequestingDataList {
 
     @JsonProperty("Conditions")
     public Object conditions;
@@ -24,9 +24,9 @@ public class DataForRequestingUserList {
     public int page;
     public int start;
 
-    public DataForRequestingUserList(Object conditions, Object endDate, String object, Object procObj,
-                                  Object propertiesQueryParameters, Object queryParameters, Object startDate,
-                                  String viewName, int limit, int page, int start) {
+    public RequestingDataList(Object conditions, Object endDate, String object, Object procObj,
+                              Object propertiesQueryParameters, Object queryParameters, Object startDate,
+                              String viewName, int limit, int page, int start) {
         this.conditions = conditions;
         this.endDate = endDate;
         this.object = object;
@@ -40,8 +40,13 @@ public class DataForRequestingUserList {
         this.start = start;
     }
 
-    public static DataForRequestingUserList getDataForRequestingUserList() {
-        return new DataForRequestingUserList(null, null, "user", null,null,
+    public static RequestingDataList getDataForRequestingUserList() {
+        return new RequestingDataList(null, null, "user", null,null,
                 null, null, "userView", 1000, 1, 0);
+    }
+
+    public static RequestingDataList getDataForRequestingRolesList() {
+        return new RequestingDataList(null, null, "role", null,null,
+                null, null, "EditRole", 1000, 1, 0);
     }
 }

@@ -1,4 +1,4 @@
-package api.users;
+package api.helpers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,5 +1,7 @@
 package api.core;
 
+import api.helpers.DataForCreation;
+import api.helpers.Val;
 import api.users.*;
 import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
@@ -9,10 +11,10 @@ import org.junit.jupiter.api.*;
 
 import java.util.*;
 
-import static api.Specs.requestSpecForUsers;
+import static api.Specs.requestSpecWithAuth;
 import static api.helpers.Properties.*;
 import static api.helpers.Properties.getStartUrl;
-import static api.users.DataForRequestingUserList.getDataForRequestingUserList;
+import static api.helpers.RequestingDataList.getDataForRequestingUserList;
 import static api.users.User.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -41,7 +43,7 @@ public class UserTest {
         Assertions.assertTrue(authorizedUser.isSuccess());
         Assertions.assertNotNull(authorizedUser.getAccessToken());
 
-        RestAssured.requestSpecification = requestSpecForUsers(getStartUrl(), authorizedUser);
+        RestAssured.requestSpecification = requestSpecWithAuth(getStartUrl(), authorizedUser);
     }
 
     @Test
@@ -53,7 +55,7 @@ public class UserTest {
         // формируем body для создания юзера
         String code = String.valueOf(new Date().getTime());
         String userName = "testUser" + code;
-        DataForCreatingUser bodyData = new DataForCreatingUser();
+        DataForCreation bodyData = new DataForCreation();
         bodyData.setId("");
         bodyData.setObject("user");
         List<Val> vals = new ArrayList<>();
@@ -101,7 +103,7 @@ public class UserTest {
         String userLogin = createdUser.getLogin() + code;
         String userFio = createdUser.getFio() + code;
         String userEmail = "testmail@mail.com";
-        DataForCreatingUser bodyData = new DataForCreatingUser();
+        DataForCreation bodyData = new DataForCreation();
         bodyData.setId(createdUser.getId());
         bodyData.setObject("user");
         List<Val> vals = new ArrayList<>();
@@ -147,7 +149,7 @@ public class UserTest {
                 break;
             }
         }
-        Assertions.assertTrue(userExists, "Created user \"" + userFio + "\" is not found in the user list");
+        Assertions.assertTrue(userExists, "Edited user \"" + userFio + "\" is not found in the user list");
     }
 
     @Test

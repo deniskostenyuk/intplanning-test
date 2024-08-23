@@ -1,10 +1,10 @@
-package api.users;
+package api.helpers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class DataForCreatingUser {
+public class DataForCreation {
 
     @JsonProperty("Id")
     private String id;
