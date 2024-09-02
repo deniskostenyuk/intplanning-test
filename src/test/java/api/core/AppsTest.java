@@ -1,5 +1,6 @@
 package api.core;
 
+import api.apps.AppsList;
 import api.helpers.DataForCreation;
 import api.helpers.Val;
 import api.users.AuthorizedUser;
@@ -29,6 +30,8 @@ public class AppsTest {
         RestAssured.config = RestAssured.config().jsonConfig(jsonConfig);
     }
 
+    private static AppsList createdApp;
+
     @BeforeAll
     public static void login() {
         User user = User.setUser(getStartUrl(), getUserLogin(), getUserPassword());
@@ -51,7 +54,7 @@ public class AppsTest {
     @DisplayName("Создание приложения с типом Native")
     public void createNativeApp() {
 
-        // формируем body для создания роли
+        // формируем body для создания приложения
         String code = String.valueOf(new Date().getTime());
         String appName = "testApp" + code;
         DataForCreation bodyData = new DataForCreation();
@@ -64,7 +67,7 @@ public class AppsTest {
 
         bodyData.setVals(vals);
 
-        // запрос на создание роли
+        // запрос на создание приложения
         given()
                 .body(bodyData)
                 .when()
@@ -72,22 +75,21 @@ public class AppsTest {
                 .then().log().all()
                 .body("Saved", equalTo(true));
 
-//        // проверка наличия созданной роли в общем списке ролей
-//        List<RolesList> rolesList = given()
-//                .body(getDataForRequestingRolesList())
-//                .when()
-//                .post("api/Registry/DoSearchViewQuery")
-//                .then().log().all()
-//                .extract().body().jsonPath().getList("data", RolesList.class);
-//        boolean roleExists = false;
-//        for (RolesList roleData : rolesList) {
-//            if (roleData.getName().equals(roleName) && roleData.getObjTypeName().equals("Системная")) {
-//                createdRole = roleData;
-//                roleExists = true;
-//                break;
-//            }
-//        }
-//        Assertions.assertTrue(roleExists, "Created role \"" + roleName + "\" is not found in the role list");
+        // проверка наличия созданного приложения в общем списке приложений
+        List<AppsList> appsList = given()
+                .when()
+                .post("api/Application/MenuItemsForMainMenuFull")
+                .then().log().all()
+                .extract().body().jsonPath().getList("", AppsList.class);
+        boolean appExists = false;
+        for (AppsList appData : appsList) {
+            if (appData.getName().equals(appName) && appData.getApp_type() == 6.0) {
+                createdApp = appData;
+                appExists = true;
+                break;
+            }
+        }
+        Assertions.assertTrue(appExists, "Created app \"" + appName + "\" is not found in the app list");
     }
 
 
