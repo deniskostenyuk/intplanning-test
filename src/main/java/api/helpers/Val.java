@@ -6,9 +6,9 @@ public class Val {
     @JsonProperty("Property")
     private String property;
     @JsonProperty("Value")
-    private String value;
+    private Object value;
 
-    public Val(String property, String value) {
+    public Val(String property, Object value) {
         this.property = property;
         this.value = value;
     }
@@ -17,7 +17,7 @@ public class Val {
         return property;
     }
 
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 

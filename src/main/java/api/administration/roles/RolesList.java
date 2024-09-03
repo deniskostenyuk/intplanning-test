@@ -1,4 +1,4 @@
-package api.roles;
+package api.administration.roles;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

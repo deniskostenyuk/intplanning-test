@@ -1,6 +1,5 @@
-package api.core;
+package api.administration;
 
-import io.qameta.allure.Epic;
 import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.config.JsonConfig;
@@ -9,8 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import api.users.AuthorizedUser;
-import api.users.User;
+import api.administration.users.AuthorizedUser;
+import api.administration.users.User;
 
 import static api.Specs.requestSpec;
 import static api.helpers.Properties.*;

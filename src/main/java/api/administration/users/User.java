@@ -1,13 +1,10 @@
-package api.users;
+package api.administration.users;
 
 
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static api.helpers.Properties.getUserLogin;
-import static api.helpers.Properties.getUserPassword;
 
 public class User {
     public String locale;

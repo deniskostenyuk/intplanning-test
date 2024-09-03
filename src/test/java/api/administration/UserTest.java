@@ -1,8 +1,10 @@
-package api.core;
+package api.administration;
 
+import api.administration.users.AuthorizedUser;
+import api.administration.users.User;
+import api.administration.users.UsersList;
 import api.helpers.DataForCreation;
 import api.helpers.Val;
-import api.users.*;
 import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.config.JsonConfig;
@@ -15,7 +17,7 @@ import static api.Specs.requestSpecWithAuth;
 import static api.helpers.Properties.*;
 import static api.helpers.Properties.getStartUrl;
 import static api.helpers.RequestingDataList.getDataForRequestingUserList;
-import static api.users.User.*;
+import static api.administration.users.User.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 

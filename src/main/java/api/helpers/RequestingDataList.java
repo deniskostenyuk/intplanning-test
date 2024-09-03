@@ -40,6 +40,12 @@ public class RequestingDataList {
         this.start = start;
     }
 
+    public RequestingDataList(Object conditions, String object, String viewName) {
+        this.conditions = conditions;
+        this.object = object;
+        this.viewName = viewName;
+    }
+
     public static RequestingDataList getDataForRequestingUserList() {
         return new RequestingDataList(null, null, "user", null,null,
                 null, null, "userView", 1000, 1, 0);
@@ -49,4 +55,9 @@ public class RequestingDataList {
         return new RequestingDataList(null, null, "role", null,null,
                 null, null, "EditRole", 1000, 1, 0);
     }
+
+    public static RequestingDataList getDataForRequestingEnterpriseList() {
+        return new RequestingDataList(null, "merop_executor", "nsi");
+    }
+
 }

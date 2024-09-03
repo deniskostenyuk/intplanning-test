@@ -1,4 +1,4 @@
-package api.apps;
+package api.administration.apps;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

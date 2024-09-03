@@ -1,10 +1,10 @@
-package api.core;
+package api.administration;
 
-import api.apps.AppsList;
+import api.administration.apps.AppsList;
 import api.helpers.DataForCreation;
 import api.helpers.Val;
-import api.users.AuthorizedUser;
-import api.users.User;
+import api.administration.users.AuthorizedUser;
+import api.administration.users.User;
 import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.config.JsonConfig;
