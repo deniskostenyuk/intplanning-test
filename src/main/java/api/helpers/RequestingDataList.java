@@ -2,6 +2,10 @@ package api.helpers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class RequestingDataList {
 
     @JsonProperty("Conditions")
@@ -40,10 +44,11 @@ public class RequestingDataList {
         this.start = start;
     }
 
-    public RequestingDataList(Object conditions, String object, String viewName) {
+    public RequestingDataList(Object conditions, Object queryParameters, String object, String viewName) {
         this.conditions = conditions;
         this.object = object;
         this.viewName = viewName;
+        this.queryParameters = queryParameters;
     }
 
     public static RequestingDataList getDataForRequestingUserList() {
@@ -57,7 +62,10 @@ public class RequestingDataList {
     }
 
     public static RequestingDataList getDataForRequestingEnterpriseList() {
-        return new RequestingDataList(null, "merop_executor", "nsi");
+        return new RequestingDataList(null,
+                new HashMap<>(Map.of("@visibility", "0")),
+                "merop_executor",
+                "nsi");
     }
 
 }
