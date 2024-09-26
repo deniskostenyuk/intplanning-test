@@ -51,7 +51,7 @@ public class ResourceTest {
     @Order(1)
     @Owner("Денис Костенюк")
     @DisplayName("Создание предприятия")
-    public void createSystemRole() {
+    public void createEnterprise() {
 
         // формируем body для создания предприятия
         String code = String.valueOf(new Date().getTime());

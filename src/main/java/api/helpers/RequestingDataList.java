@@ -68,4 +68,18 @@ public class RequestingDataList {
                 "nsi");
     }
 
+    public static RequestingDataList getDataForRequestingEventList() {
+        HashMap<String, String> configMap = new HashMap<>(Map.of(
+                "IdProperty", "ID",
+                "ParentIdProperty", "PARENT_ID"
+        ));
+        return new RequestingDataList(null,
+                new HashMap<>(Map.of(
+                        "Key", "Tree",
+                        "Config", configMap
+                        )),
+                "merop",
+                "nsi");
+    }
+
 }
