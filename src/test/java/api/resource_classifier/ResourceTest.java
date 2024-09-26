@@ -9,6 +9,7 @@ import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
 import io.restassured.config.JsonConfig;
 import io.restassured.path.json.config.JsonPathConfig;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
 
 import java.util.*;
@@ -69,12 +70,19 @@ public class ResourceTest {
         bodyData.setVals(vals);
 
         // запрос на создание предприятия
-        given()
+        Response response = given()
                 .body(bodyData)
                 .when()
                 .post("api/Registry/SaveRec")
                 .then().log().all()
-                .body("Saved", equalTo(true));
+                .extract().response();
+        if (response.jsonPath().getMap("$").containsKey("Saved")) {
+            boolean isSaved = response.path("Saved");
+            if (!isSaved) {
+                throw new AssertionError("Failed to save data: " + response.path("Message"));
+            }
+        } else throw new AssertionError("Failed to save data: " + response.path("Message"));
+
 
         // проверка наличия созданного предприятия в общем списке предприятий
         List<EnterpriseList> enterpriseList = given()
